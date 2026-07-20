@@ -52,33 +52,57 @@ module.exports = async (req, res) => {
       parts: [{ text: m.content.slice(0, 2000) }],
     }));
 
-  try {
-    const response = await fetch(`${GEMINI_URL}?key=${apiKey}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        system_instruction: { parts: { text: SYSTEM_PROMPT } },
-        contents,
-        generationConfig: { maxOutputTokens: 400, thinkingConfig: { thinkingBudget: 0 } },
-      }),
-    });
+  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+  const requestBody = JSON.stringify({
+    system_instruction: { parts: { text: SYSTEM_PROMPT } },
+    contents,
+    generationConfig: { maxOutputTokens: 400, thinkingConfig: { thinkingBudget: 0 } },
+  });
 
-    if (!response.ok) {
-      const errText = await response.text().catch(() => "");
-      console.error("Gemini API error:", response.status, errText);
-      res.status(502).json({ error: "Byte is temporarily unavailable. Please try again shortly or use the contact form." });
-      return;
+  // Google's free tier occasionally returns 503 "high demand" errors that
+  // clear up within a second or two — retry a couple of times before giving up.
+  const RETRY_DELAYS_MS = [500, 1200];
+  let lastStatus = null;
+  let lastErrText = "";
+
+  for (let attempt = 0; attempt <= RETRY_DELAYS_MS.length; attempt++) {
+    try {
+      const response = await fetch(`${GEMINI_URL}?key=${apiKey}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: requestBody,
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        const reply = (data.candidates?.[0]?.content?.parts || [])
+          .map((part) => part.text || "")
+          .join("\n")
+          .trim();
+
+        res.status(200).json({ reply: reply || "Sorry, I didn't catch that — could you rephrase?" });
+        return;
+      }
+
+      lastStatus = response.status;
+      lastErrText = await response.text().catch(() => "");
+
+      const isRetryable = response.status === 503 || response.status === 429;
+      if (!isRetryable || attempt === RETRY_DELAYS_MS.length) break;
+      await sleep(RETRY_DELAYS_MS[attempt]);
+    } catch (err) {
+      lastStatus = "network_error";
+      lastErrText = String(err);
+      if (attempt === RETRY_DELAYS_MS.length) break;
+      await sleep(RETRY_DELAYS_MS[attempt]);
     }
-
-    const data = await response.json();
-    const reply = (data.candidates?.[0]?.content?.parts || [])
-      .map((part) => part.text || "")
-      .join("\n")
-      .trim();
-
-    res.status(200).json({ reply: reply || "Sorry, I didn't catch that — could you rephrase?" });
-  } catch (err) {
-    console.error("Gemini API error:", err);
-    res.status(502).json({ error: "Byte is temporarily unavailable. Please try again shortly or use the contact form." });
   }
+
+  console.error("Gemini API error:", lastStatus, lastErrText);
+  res.status(502).json({
+    error:
+      lastStatus === 503
+        ? "Byte's AI provider is experiencing high demand right now. Please try again in a minute, or use the contact form."
+        : "Byte is temporarily unavailable. Please try again shortly or use the contact form.",
+  });
 };
