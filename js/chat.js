@@ -4,17 +4,19 @@
   const ICON_SEND =
     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>';
 
-  /* Byte's face — a friendly circle face with a small "pixel dissolve" accent
-     echoing the Smart Touch + logo mark, so the mascot reads as on-brand. */
+  /* Byte's face — a friendly little robot: antenna, rounded screen-head,
+     dot eyes, a smile, and a small collar with a grille line underneath. */
   const ICON_BYTE_FACE =
     '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">' +
-    '<circle cx="11" cy="13" r="8" stroke="currentColor" stroke-width="2"/>' +
-    '<circle cx="8.2" cy="12" r="1.15" fill="currentColor"/>' +
-    '<circle cx="13.8" cy="12" r="1.15" fill="currentColor"/>' +
-    '<path d="M7.8 15.8c1 1.2 2.4 1.8 3.2 1.8s2.2-.6 3.2-1.8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>' +
-    '<rect x="16.4" y="1.6" width="2.2" height="2.2" rx="0.5" fill="currentColor"/>' +
-    '<rect x="19.8" y="3.5" width="1.5" height="1.5" rx="0.4" fill="currentColor"/>' +
-    '<rect x="17.5" y="5.2" width="1.2" height="1.2" rx="0.3" fill="currentColor"/>' +
+    '<circle cx="12" cy="2.1" r="1" fill="currentColor"/>' +
+    '<line x1="12" y1="3" x2="12" y2="4.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>' +
+    '<rect x="4.5" y="4.6" width="15" height="10.4" rx="4" stroke="currentColor" stroke-width="1.7"/>' +
+    '<circle cx="9" cy="9.4" r="1.15" fill="currentColor"/>' +
+    '<circle cx="15" cy="9.4" r="1.15" fill="currentColor"/>' +
+    '<path d="M9 12c1 1 2 1.4 3 1.4s2-.4 3-1.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>' +
+    '<line x1="12" y1="15" x2="12" y2="16.6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>' +
+    '<rect x="6.5" y="16.6" width="11" height="4.8" rx="2.4" stroke="currentColor" stroke-width="1.7"/>' +
+    '<line x1="9" y1="19" x2="15" y2="19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>' +
     "</svg>";
 
   const GREETING =
@@ -82,10 +84,15 @@
     if (!text.trim() || sending) return;
     sending = true;
 
+    const input = document.getElementById("chatInput");
+    const sendBtn = document.getElementById("chatSend");
+
     appendMessage("user", text);
     messages.push({ role: "user", content: text });
-    document.getElementById("chatInput").value = "";
-    document.getElementById("chatSend").disabled = true;
+    input.value = "";
+    input.disabled = true;
+    sendBtn.disabled = true;
+    sendBtn.classList.add("is-sending");
     showTyping();
 
     try {
@@ -104,8 +111,6 @@
           data.error ||
             "Byte isn't fully wired up yet on this deployment. Please use the contact form and a real person will get back to you."
         );
-        sending = false;
-        document.getElementById("chatSend").disabled = false;
         return;
       }
 
@@ -117,7 +122,10 @@
       appendMessage("bot", "Sorry, I'm having trouble connecting right now. Please try again or use the contact form.");
     } finally {
       sending = false;
-      document.getElementById("chatSend").disabled = false;
+      sendBtn.classList.remove("is-sending");
+      sendBtn.disabled = false;
+      input.disabled = false;
+      input.focus();
     }
   }
 
