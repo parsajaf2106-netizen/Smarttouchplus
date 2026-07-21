@@ -1036,6 +1036,17 @@ main {
   color: var(--text-muted);
 }
 
+.pricing-footnote a {
+  color: var(--blue-600);
+  text-decoration: underline;
+  text-decoration-color: var(--blue-200);
+  text-underline-offset: 2px;
+}
+
+.pricing-footnote a:hover {
+  text-decoration-color: var(--blue-600);
+}
+
 /* ==========================================================================
    Footer
    ========================================================================== */

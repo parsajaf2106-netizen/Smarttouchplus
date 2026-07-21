@@ -67,11 +67,19 @@
                 <label for="serviceInterest">Service of Interest</label>
                 <select id="serviceInterest" name="service" class="form-control">
                   <option value="">Select a service...</option>
-                  <option value="Help Desk & On-Site Support">Help Desk &amp; On-Site Support</option>
-                  <option value="Network & Server Management">Network &amp; Server Management</option>
-                  <option value="Cybersecurity">Cybersecurity</option>
-                  <option value="Backup & Disaster Recovery">Backup &amp; Disaster Recovery</option>
-                  <option value="Microsoft 365 Administration">Microsoft 365 Administration</option>
+                  <optgroup label="Individual Services">
+                    <option value="Help Desk & On-Site Support">Help Desk &amp; On-Site Support</option>
+                    <option value="Network & Server Management">Network &amp; Server Management</option>
+                    <option value="Cybersecurity">Cybersecurity</option>
+                    <option value="Backup & Disaster Recovery">Backup &amp; Disaster Recovery</option>
+                    <option value="Microsoft 365 Administration">Microsoft 365 Administration</option>
+                  </optgroup>
+                  <optgroup label="Service Tiers">
+                    <option value="Basic Tier">Basic Tier</option>
+                    <option value="Standard Tier">Standard Tier</option>
+                    <option value="Premium Tier">Premium Tier</option>
+                    <option value="Enterprise (Custom)">Enterprise (Custom)</option>
+                  </optgroup>
                   <option value="Other">Other</option>
                 </select>
               </div>
