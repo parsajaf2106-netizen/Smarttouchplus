@@ -904,6 +904,139 @@ main {
 }
 
 /* ==========================================================================
+   Pricing / service tiers
+   ========================================================================== */
+.pricing-grid {
+  align-items: stretch;
+}
+
+.pricing-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 2.25rem 2rem 2rem;
+}
+
+.pricing-card.is-featured {
+  border-color: var(--blue-400);
+  box-shadow: var(--shadow-md);
+}
+
+.pricing-badge {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--gradient-brand);
+  color: #fff;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.4rem 1rem;
+  border-radius: var(--radius-full);
+  white-space: nowrap;
+}
+
+.pricing-card-header {
+  margin-bottom: 1.5rem;
+}
+
+.pricing-card-header h3 {
+  margin-bottom: 0.5rem;
+}
+
+.pricing-card-header p {
+  font-size: 0.9375rem;
+  color: var(--text-secondary);
+}
+
+.pricing-features {
+  display: grid;
+  gap: 0.9rem;
+  margin-bottom: 2rem;
+  flex-grow: 1;
+}
+
+.pricing-features li {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0 0.5rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.pricing-features li small {
+  font-weight: 500;
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+}
+
+.pf-icon {
+  position: relative;
+  top: -0.05em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+}
+
+.pf-icon::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  background: currentColor;
+}
+
+.pf-included { color: var(--text-primary); }
+.pf-included .pf-icon { color: #16a34a; background: #dcfce7; }
+.pf-included .pf-icon::before { width: 9px; height: 5px; border-radius: 1px; background: transparent; border-left: 2px solid #16a34a; border-bottom: 2px solid #16a34a; transform: rotate(-45deg) translate(1px, -1px); }
+
+.pf-limited { color: var(--text-primary); }
+.pf-limited .pf-icon { color: #b45309; background: #fef3c7; }
+
+.pf-addon { color: var(--text-primary); }
+.pf-addon .pf-icon { color: var(--blue-600); background: var(--blue-100); }
+.pf-addon .pf-icon::before { content: ""; position: absolute; top: 50%; left: 50%; width: 9px; height: 2px; border-radius: 1px; background: var(--blue-600); transform: translate(-50%, -50%); }
+.pf-addon .pf-icon::after { content: ""; position: absolute; top: 50%; left: 50%; width: 2px; height: 9px; border-radius: 1px; background: var(--blue-600); transform: translate(-50%, -50%); }
+
+.pf-none { color: var(--text-muted); }
+.pf-none .pf-icon { color: var(--slate-400); background: var(--surface-alt); }
+.pf-none .pf-icon::before { width: 8px; height: 2px; border-radius: 1px; }
+
+.pricing-legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem 2rem;
+  margin: 3rem 0 1.5rem;
+}
+
+.pricing-legend li {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.pricing-footnote {
+  text-align: center;
+  font-size: 0.9375rem;
+  color: var(--text-muted);
+}
+
+/* ==========================================================================
    Footer
    ========================================================================== */
 .site-footer {
