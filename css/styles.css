@@ -615,8 +615,9 @@ main {
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  font-size: 0.875rem;
-  font-weight: 600;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 500;
   color: var(--text-inverse-muted);
 }
 
@@ -720,6 +721,19 @@ main {
 .card-icon svg {
   width: 26px;
   height: 26px;
+}
+
+.card-code {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--blue-600);
+  background: var(--blue-100);
+  border-radius: var(--radius-sm);
+  padding: 0.3rem 0.6rem;
+  margin-bottom: 1rem;
 }
 
 .card h3 {
@@ -833,10 +847,6 @@ main {
   padding: 2.25rem;
 }
 
-.industry-card .card-icon {
-  margin-bottom: 1.5rem;
-}
-
 /* Steps ("How We Work") */
 .steps {
   display: grid;
@@ -891,13 +901,10 @@ main {
 }
 
 .stat-value {
-  font-family: var(--font-heading);
-  font-weight: 700;
-  font-size: clamp(2rem, 3vw, 2.5rem);
-  background: linear-gradient(135deg, var(--blue-300), var(--blue-500));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: clamp(1.875rem, 3vw, 2.375rem);
+  color: var(--blue-300);
 }
 
 .stat-label {
